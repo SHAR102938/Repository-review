@@ -5,4 +5,4 @@ services:
     plan: free
     buildCommand: |
       npm install && npm run build --prefix client
-    startCommand: npm start --prefix server
+    startCommand: npm start
