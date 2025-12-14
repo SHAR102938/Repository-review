@@ -1,3 +1,6 @@
+Working link : https://repository-review-oitn.onrender.com
+Since it is a unpaid server so due to inactivity on server for 15 min it automatically shutdown
+so when entering a website waitfor 15-20 sec so that server start and after clicking on Analyze wait for 5-10 sec it will take to analyze
 # Code Reviewer AI
 
 Code Reviewer AI is a web application that provides an in-depth analysis of your GitHub repositories. It evaluates various aspects of your project, including code quality, project structure, documentation, testing practices, and more, to generate a comprehensive report with an overall score and a developer skill level assessment.
