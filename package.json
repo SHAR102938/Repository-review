@@ -4,10 +4,11 @@
   "description": "AI Code Reviewer",
   "main": "server/server.js",
   "scripts": {
-    "start": "node server/server.js",
+    "start": "npm start --prefix server",
     "server": "nodemon server/server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install": "npm install && npm install --prefix client && npm install --prefix server"
   },
   "keywords": [],
   "author": "",
