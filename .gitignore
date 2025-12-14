@@ -1,0 +1,11 @@
+# Dependencies
+/node_modules
+
+# Temporary files
+/temp
+
+# Build files
+/build
+
+# Environment variables
+.env

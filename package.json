@@ -1,0 +1,30 @@
+{
+  "name": "code-reviewer",
+  "version": "1.0.0",
+  "description": "AI Code Reviewer",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "server": "nodemon server/server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "escomplex": "^2.0.0-alpha",
+    "eslint": "^9.39.2",
+    "esprima": "^4.0.1",
+    "express": "^4.17.1",
+    "npm-audit-report": "^7.0.0",
+    "simple-git": "^2.48.0",
+    "tmp": "^0.2.3"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "nodemon": "^2.0.9"
+  }
+}

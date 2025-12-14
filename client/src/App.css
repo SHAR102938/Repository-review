@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+    margin: 0;
+}
+
+.App {
+    text-align: center;
+}
+
+.App-header {
+    background: linear-gradient(135deg, #16222a, #3a6073);
+    padding: 50px 20px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid #4f4f4f;
+}
+
+.App-header h1 {
+    margin: 0;
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.App-header p {
+    font-size: 1.3rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+main {
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+form {
+    display: flex;
+    margin-bottom: 50px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    padding: 20px;
+    font-size: 1.2rem;
+    border: none;
+    background-color: #2c2c54;
+    color: #e0e0e0;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+
+input[type="text"]::placeholder {
+    color: #888;
+}
+
+input[type="text"]:focus {
+    background-color: #3a3a6a;
+}
+
+button {
+    padding: 20px 35px;
+    font-size: 1.2rem;
+    border: none;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 700;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+}
+
+button:disabled {
+    background: #555;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.error {
+    color: #ff6b6b;
+    font-weight: 700;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.analysis-results {
+    background-color: #1e1e3f;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+.analysis-results h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #fff;
+    border-bottom: 2px solid #00c6ff;
+    padding-bottom: 10px;
+}
+
+.score-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.overall-score, .skill-level, .badge {
+    padding: 25px;
+    border-radius: 12px;
+    background-color: #2c2c54;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.overall-score:hover, .skill-level:hover, .badge:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.overall-score p, .skill-level p, .badge p {
+    margin: 0 0 15px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #a0a0a0;
+}
+
+.overall-score span, .skill-level span, .badge span {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #00c6ff;
+}
+
+.summary, .scores-breakdown, .roadmap {
+    margin-bottom: 40px;
+    background-color: #2c2c54;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.summary h3, .scores-breakdown h3, .roadmap h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.scores-breakdown ul, .roadmap ul {
+    list-style: none;
+    padding: 0;
+}
+
+.scores-breakdown li {
+    display: flex;
+    justify-content: space-between;
+    padding: 18px;
+    border-bottom: 1px solid #4f4f4f;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+}
+
+.scores-breakdown li:hover {
+    background-color: #3a3a6a;
+}
+
+.scores-breakdown li:last-child {
+    border-bottom: none;
+}
+
+.roadmap li {
+    padding: 18px;
+    border-bottom: 1px solid #4f4f4f;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    transition: background-color 0.3s ease;
+}
+
+.roadmap li:hover {
+    background-color: #3a3a6a;
+}
+
+.roadmap li:last-child {
+    border-bottom: none;
+}
