@@ -127,7 +127,7 @@ async function analyzeCodeQuality(repoPath) {
     }
 
     const eslint = new ESLint({
-        overrideConfigFile: true,
+        useEslintrc: false,
         overrideConfig: {
             env: {
                 browser: true,
