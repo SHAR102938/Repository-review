@@ -5,4 +5,8 @@ services:
     plan: free
     buildCommand: |
       npm install && npm run build --prefix client
-    startCommand: npm start
+    startCommand: npm start --prefix server
+    routes:
+      - type: rewrite
+        source: /api/(.*)
+        destination: /api/$1
