@@ -24,10 +24,10 @@ function parseGitHubUrl(url) {
 }
 
 // Helper function to calculate repository score
-function calculateRepoScore(repoData, languages, commits, issues, pullRequests) {
+function calculateRepoScore(repoData, languages, commits, issues, pullRequests, files) {
     let score = 0;
-    let maxScore = 100;
-    
+    const maxScore = 100;
+
     const scores = {
         documentation: { score: 0, maxScore: 20 },
         codeQuality: { score: 0, maxScore: 20 },
@@ -37,30 +37,22 @@ function calculateRepoScore(repoData, languages, commits, issues, pullRequests) 
     };
 
     // Documentation Score
-    if (repoData.description && repoData.description.length > 50) {
-        scores.documentation.score += 10;
-    }
-    if (repoData.has_readme) {
-        scores.documentation.score += 5;
-    }
-    if (repoData.has_wiki) {
-        scores.documentation.score += 5;
-    }
+    const hasReadme = files.some(f => f.toLowerCase().includes('readme'));
+    const hasLicense = files.some(f => f.toLowerCase().includes('license'));
+    const hasContributing = files.some(f => f.toLowerCase().includes('contributing'));
+    
+    if (hasReadme) scores.documentation.score += 10;
+    if (hasLicense) scores.documentation.score += 5;
+    if (hasContributing) scores.documentation.score += 5;
 
     // Code Quality Score
-    const totalLanguages = Object.keys(languages).length;
-    if (totalLanguages > 1) {
-        scores.codeQuality.score += 5;
-    }
-    if (repoData.size < 10000) {
-        scores.codeQuality.score += 5;
-    }
-    if (repoData.size > 1000) {
-        scores.codeQuality.score += 5;
-    }
-    if (languages.JavaScript || languages.TypeScript) {
-        scores.codeQuality.score += 5;
-    }
+    const hasTests = files.some(f => f.includes('test') || f.includes('spec'));
+    const hasLintConfig = files.some(f => f.includes('eslint') || f.includes('prettier'));
+    const hasCI = files.some(f => f.includes('.github/workflows') || f.includes('.travis.yml'));
+    
+    if (hasTests) scores.codeQuality.score += 10;
+    if (hasLintConfig) scores.codeQuality.score += 5;
+    if (hasCI) scores.codeQuality.score += 5;
 
     // Community Score
     if (repoData.has_issues) {
@@ -104,7 +96,18 @@ function calculateRepoScore(repoData, languages, commits, issues, pullRequests) 
         score += category.score;
     });
 
-    return { score, scores, maxScore };
+    return {
+        score,
+        scores,
+        maxScore,
+        checks: {
+            hasReadme,
+            hasLicense,
+            hasTests,
+            hasLintConfig,
+            hasCI
+        }
+    };
 }
 
 app.post('/api/analyze', async (req, res) => {
@@ -125,6 +128,7 @@ app.post('/api/analyze', async (req, res) => {
         // Fetch repository data
         const repoResponse = await axios.get(`${GITHUB_API_BASE}/repos/${owner}/${repo}`);
         const repoData = repoResponse.data;
+        const defaultBranch = repoData.default_branch;
 
         // Fetch additional data
         const [languagesResponse, commitsResponse, issuesResponse, pullRequestsResponse] = await Promise.all([
@@ -139,8 +143,12 @@ app.post('/api/analyze', async (req, res) => {
         const issues = issuesResponse.data;
         const pullRequests = pullRequestsResponse.data;
 
+        // Fetch file tree
+        const treeResponse = await axios.get(`${GITHUB_API_BASE}/repos/${owner}/${repo}/git/trees/${defaultBranch}?recursive=1`);
+        const files = treeResponse.data.tree.map(file => file.path);
+
         // Calculate scores
-        const { score, scores } = calculateRepoScore(repoData, languages, commits, issues, pullRequests);
+        const { score, scores, checks } = calculateRepoScore(repoData, languages, commits, issues, pullRequests, files);
 
         // Determine skill level and badge
         let skillLevel = 'Beginner';
@@ -164,32 +172,39 @@ app.post('/api/analyze', async (req, res) => {
         // Generate improvement roadmap
         const roadmap = [];
         
-        if (scores.documentation.score < 15) {
-            roadmap.push('Add comprehensive README with setup instructions and examples');
-            roadmap.push('Enable GitHub Wiki for additional documentation');
+        if (!checks.hasReadme) {
+            roadmap.push('Add a comprehensive README.md with project description, installation instructions, and usage examples');
         }
         
-        if (scores.codeQuality.score < 15) {
-            roadmap.push('Add code linting and formatting tools');
-            roadmap.push('Implement automated testing');
+        if (!checks.hasLicense) {
+            roadmap.push('Add a LICENSE file to clarify usage rights and restrictions');
+        }
+        
+        if (!checks.hasTests) {
+            roadmap.push('Implement unit tests (consider using Jest or Mocha for JavaScript projects)');
+        }
+        
+        if (!checks.hasLintConfig) {
+            roadmap.push('Add linting configuration (ESLint for JavaScript/TypeScript) to enforce code style consistency');
+        }
+        
+        if (!checks.hasCI) {
+            roadmap.push('Set up continuous integration (GitHub Actions is recommended for GitHub repositories)');
         }
         
         if (scores.community.score < 15) {
             roadmap.push('Create issue templates for bug reports and feature requests');
             roadmap.push('Add contributing guidelines');
-            roadmap.push('Set up code review process');
         }
         
         if (scores.maintenance.score < 15) {
-            roadmap.push('Set up automated dependency updates');
+            roadmap.push('Set up automated dependency updates (consider Dependabot)');
             roadmap.push('Create release notes for new versions');
-            roadmap.push('Implement CI/CD pipeline');
         }
         
         if (scores.popularity.score < 15) {
-            roadmap.push('Promote repository on social media and developer forums');
-            roadmap.push('Add repository to relevant awesome lists');
-            roadmap.push('Create demo or live examples');
+            roadmap.push('Add project to relevant awesome lists in your technology stack');
+            roadmap.push('Create a demo or live example of your project');
         }
 
         const response = {

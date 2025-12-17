@@ -29,6 +29,7 @@ function App() {
             const data = await response.json();
             setAnalysis(data);
         } catch (err) {
+            console.error('Fetch Error:', err);
             setError(err.message);
         } finally {
             setLoading(false);
